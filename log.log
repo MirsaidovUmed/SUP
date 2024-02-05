@@ -1,2 +1,0 @@
-{"file":"D:/go/SUP/internal/transport/http/handlers/login.go:25","func":"SUP/internal/transport/http/handlers.(*Handler).Login","level":"info","msg":"json data is: %!v(MISSING)\n, inputData","time":"2024-02-01T21:11:35+05:00"}
-{"file":"D:/go/SUP/internal/transport/http/handlers/login.go:42","func":"SUP/internal/transport/http/handlers.(*Handler).Login","level":"info","msg":"json data is: %!v(MISSING)\n, inputData","time":"2024-02-01T21:13:54+05:00"}
