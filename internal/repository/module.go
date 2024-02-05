@@ -24,6 +24,7 @@ type RepositoryInterface interface {
 	CheckTaskByTitle(task models.Task) (err error)
 	GetUserIdByEmail(userEmail string) (userFromDB models.User, err error)
 	GetProject(project models.Project) (projectFromDB models.Project, err error)
+	GetTask(task models.Task) (taskFromBD models.Task, err error)
 }
 
 func NewRepository(conn *pgx.Conn, logger *logrus.Logger) RepositoryInterface {

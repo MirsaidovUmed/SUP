@@ -9,10 +9,10 @@ import (
 	"net/http"
 )
 
-func (h *Handler) GetProject(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) GetTask(w http.ResponseWriter, r *http.Request) {
 	var resp response.Response
 
-	var inputData models.Project
+	var inputData models.Task
 	err := json.NewDecoder(r.Body).Decode(&inputData)
 	if err != nil {
 		resp = response.BadRequest
@@ -20,24 +20,26 @@ func (h *Handler) GetProject(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	projectFromDB, err := h.svc.GetProject(inputData)
+	taskFromDB, err := h.svc.GetTask(inputData)
 	if err != nil {
 		log.Println("Error:", err) // Логгирование ошибки
 		if err == errors.ErrDataNotFound {
-			resp = response.Response{Code: 404, Message: "Проект не найден"}
+			resp = response.Response{Code: 404, Message: "Задача не найдена"}
 		} else {
 			resp = response.InternalServer
 		}
 	} else {
 		resp = response.Success
 		resp.Payload = map[string]interface{}{
-			"id":          projectFromDB.Id,
-			"name":        projectFromDB.Name,
-			"description": projectFromDB.Description,
-			"status_id":   projectFromDB.Status.Id,
-			"manager_id":  projectFromDB.Manager.Id,
-			"start_date":  projectFromDB.StartDate,
-			"dead_line":   projectFromDB.DeadLine,
+			"id":            taskFromDB.Id,
+			"title":         taskFromDB.Title,
+			"description":   taskFromDB.Description,
+			"status_id":     taskFromDB.Status.Id,
+			"controller_id": taskFromDB.Controller.Id,
+			"executor_id":   taskFromDB.Executor.Id,
+			"project_id":    taskFromDB.Project.Id,
+			"start_date":    taskFromDB.StartDate,
+			"dead_line":     taskFromDB.DeadLine,
 		}
 	}
 
