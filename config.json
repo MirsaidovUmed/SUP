@@ -1,0 +1,7 @@
+{
+    "server_address" : "127.0.0.1",
+    "server_port" : 5000,
+    "postgres_url" : "postgres://postgres:postgres@localhost:5432/sup",
+    "jwt_secret_key" : "super super super secret key",
+    "log_path" : "../log.log"
+}
