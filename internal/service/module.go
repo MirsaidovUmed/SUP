@@ -21,6 +21,7 @@ type ServiceInterface interface {
 	RoleExists(roleName string) (err error)
 	StatusExists(status models.Status) (err error)
 	CreateTask(task models.Task, status models.Status) (err error)
+	GetProject(project models.Project) (projectFromDB models.Project, err error)
 }
 
 func NewService(repo repository.RepositoryInterface, config *config.Config, logger *logrus.Logger) ServiceInterface {
