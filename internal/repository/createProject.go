@@ -19,7 +19,7 @@ func (repo *Repository) CreateProject(project models.Project) (err error) {
 		repo.Logger.WithFields(logrus.Fields{
 			"project": project,
 			"err":     err,
-		}).Error("error in repo, CreateUser")
+		}).Error("error in repo, CreateProject")
 	}
 	return
 }
