@@ -4,7 +4,6 @@ import (
 	"SUP/internal/models"
 	"context"
 	"errors"
-	"fmt"
 	"github.com/sirupsen/logrus"
 )
 
@@ -14,8 +13,6 @@ func (repo *Repository) GetStatusByName(status models.Status) (statusFromDB mode
 		FROM statuses
 		WHERE name = $1
 	`, status.Name).Scan(&statusFromDB.Id, &statusFromDB.Name)
-
-	fmt.Println("Status Name:", status.Name)
 
 	if err != nil {
 		repo.Logger.WithFields(logrus.Fields{

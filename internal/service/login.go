@@ -4,23 +4,23 @@ import (
 	"SUP/internal/models"
 	"SUP/pkg/errors"
 	"SUP/pkg/utils"
-	"fmt"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func (s *Service) Login(user models.User) (accessToken string, err error) {
-	userFromDB, err := s.Repo.GetUserByEmail(user)
+	userFromDB, err := s.Repo.GetUserIdByEmail(user.Email)
 	if err != nil {
-		return
+		return "", err
 	}
 
-	fmt.Println(userFromDB.Password)
-
-	if userFromDB.Password != user.Password {
+	err = bcrypt.CompareHashAndPassword([]byte(userFromDB.Password), []byte(user.Password))
+	if err == bcrypt.ErrMismatchedHashAndPassword {
 		err = errors.ErrWrongPassword
-		return
+		return "", err
+	} else if err != nil {
+		return "", err
 	}
 
 	accessToken, err = utils.CreateToken(s.Config.JwtSecretKey, userFromDB.Id)
-
-	return
+	return accessToken, err
 }

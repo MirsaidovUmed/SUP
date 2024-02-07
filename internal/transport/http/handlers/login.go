@@ -16,21 +16,25 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	var inputData models.User
 
 	err := json.NewDecoder(r.Body).Decode(&inputData)
-
 	if err != nil {
 		resp = response.BadRequest
 		return
 	}
+
 	token, err := h.svc.Login(inputData)
 
-	if err == errors.ErrDataNotFound {
-		resp = response.NotFound
-		return
-	} else if err == errors.ErrWrongPassword {
-		resp.Code = 403
-		resp.Message = "Wrong Password"
-	} else if err != nil {
-		resp = response.InternalServer
+	if err != nil {
+		if err == errors.ErrDataNotFound {
+			resp = response.NotFound
+			return
+		} else if err == errors.ErrWrongPassword {
+			resp.Code = http.StatusForbidden
+			resp.Message = "Wrong Password"
+			return
+		} else {
+			resp = response.InternalServer
+			return
+		}
 	}
 
 	resp = response.Success
