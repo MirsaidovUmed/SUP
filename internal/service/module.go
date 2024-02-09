@@ -24,6 +24,7 @@ type ServiceInterface interface {
 	GetProject(project models.Project) (projectFromDB models.Project, err error)
 	GetTask(task models.Task) (taskFromDB models.Task, err error)
 	CreateProjectParticipant(projectParticipant models.ProjectParticipant) (err error)
+	UpdateUser(user models.User) (err error)
 }
 
 func NewService(repo repository.RepositoryInterface, config *config.Config, logger *logrus.Logger) ServiceInterface {

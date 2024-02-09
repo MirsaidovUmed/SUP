@@ -22,6 +22,7 @@ func InitRouter(handlers *handlers.Handler, mw middleware.MiddlewareInterface) *
 	privateRouter.HandleFunc("/api/createProjectParticipant", handlers.CreateProjectParticipant).Methods("POST")
 	privateRouter.HandleFunc("/api/getProject", handlers.GetProject).Methods("GET")
 	privateRouter.HandleFunc("/api/getTask", handlers.GetTask).Methods("GET")
+	privateRouter.HandleFunc("/api/updateUser", handlers.UpdateUser).Methods("POST")
 
 	return router
 }
