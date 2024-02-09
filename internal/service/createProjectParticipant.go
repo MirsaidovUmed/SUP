@@ -18,7 +18,6 @@ func (s *Service) CreateProjectParticipant(projectParticipant models.ProjectPart
 
 	participant, err := s.Repo.GetUserIdByEmail(projectParticipant.Participant.Email)
 	if err != nil {
-		fmt.Println(1)
 		return
 	}
 	projectParticipant.Participant.Id = participant.Id

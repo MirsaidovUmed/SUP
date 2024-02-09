@@ -2,13 +2,11 @@ package service
 
 import (
 	"SUP/internal/models"
-	"fmt"
 )
 
 func (s *Service) UpdateProject(project models.Project) (err error) {
 	existingProject, err := s.Repo.GetProject(project)
 	if err != nil {
-		fmt.Println(2)
 		return err
 	}
 
@@ -23,7 +21,6 @@ func (s *Service) UpdateProject(project models.Project) (err error) {
 
 	statusId, err := s.Repo.GetStatusByName(project.Status)
 	if err != nil {
-		fmt.Println(1)
 		return err
 	}
 
@@ -31,7 +28,6 @@ func (s *Service) UpdateProject(project models.Project) (err error) {
 
 	managerId, err := s.Repo.GetUserIdByEmail(project.Manager.Email)
 	if err != nil {
-		fmt.Println(1)
 		return err
 	}
 

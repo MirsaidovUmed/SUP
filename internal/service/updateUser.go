@@ -2,14 +2,12 @@ package service
 
 import (
 	"SUP/internal/models"
-	"fmt"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func (s *Service) UpdateUser(user models.User) (err error) {
 	existingUser, err := s.Repo.GetUserIdByEmail(user.Email)
 	if err != nil {
-		fmt.Println(2)
 		return err
 	}
 
@@ -28,7 +26,6 @@ func (s *Service) UpdateUser(user models.User) (err error) {
 
 	roleId, err := s.Repo.GetRoleByName(user.Role.Name)
 	if err != nil {
-		fmt.Println(1)
 		return err
 	}
 
