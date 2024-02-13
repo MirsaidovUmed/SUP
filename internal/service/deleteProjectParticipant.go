@@ -5,7 +5,7 @@ import (
 	"SUP/pkg/errors"
 )
 
-func (s *Service) CreateProjectParticipant(projectParticipant models.ProjectParticipant) (err error) {
+func (s *Service) DeleteProjectParticipant(projectParticipant models.ProjectParticipant) (err error) {
 	projectFromDB, err := s.Repo.CheckProjectByName(projectParticipant.Project)
 	if err != nil {
 		if err == errors.ErrDataNotFound {
@@ -21,7 +21,6 @@ func (s *Service) CreateProjectParticipant(projectParticipant models.ProjectPart
 	projectParticipant.Participant.Id = participant.Id
 
 	projectParticipant.Project.Id = projectFromDB.Id
-
-	err = s.Repo.CreateProjectParticipant(projectParticipant)
+	err = s.Repo.DeleteProjectParticipant(projectParticipant)
 	return
 }

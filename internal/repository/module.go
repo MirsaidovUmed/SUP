@@ -29,6 +29,7 @@ type RepositoryInterface interface {
 	UpdateUser(user models.User) (err error)
 	UpdateProject(project models.Project) (err error)
 	UpdateTask(task models.Task) (err error)
+	DeleteProjectParticipant(participant models.ProjectParticipant) (err error)
 }
 
 func NewRepository(conn *pgx.Conn, logger *logrus.Logger) RepositoryInterface {

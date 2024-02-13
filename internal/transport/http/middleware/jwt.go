@@ -70,6 +70,22 @@ func (mw *Middleware) JWT(next http.Handler) http.Handler {
 			return
 		}
 
+		//roleId, ok := tokenMap["role_id"].(float64)
+		//
+		//if !ok {
+		//	resp = response.Unauthorized
+		//	resp.WriteJSON(w)
+		//	return
+		//}
+		//
+		//roleName, ok := tokenMap["role_name"].(string)
+		//
+		//if !ok {
+		//	resp = response.Unauthorized
+		//	resp.WriteJSON(w)
+		//	return
+		//}
+
 		err = mw.service.CheckUserById(int(userID))
 
 		if err != nil {

@@ -13,6 +13,8 @@ func CreateToken(secretKey string, id int) (accessToken string, err error) {
 		jwt.MapClaims{
 			"exp":     time.Now().Add(time.Hour * 24).Unix(),
 			"user_id": id,
+			//"role_id":   roleId,
+			//"role_name": roleName,
 		})
 
 	tokenString, err := token.SignedString([]byte(secretKey))
