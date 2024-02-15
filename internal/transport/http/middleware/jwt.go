@@ -1,12 +1,13 @@
+// middleware/middleware.go
 package middleware
 
 import (
 	"SUP/pkg/response"
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/gorilla/context"
 	"net/http"
 	"strings"
 	"time"
-
-	"github.com/golang-jwt/jwt/v5"
 )
 
 func (mw *Middleware) JWT(next http.Handler) http.Handler {
@@ -70,21 +71,26 @@ func (mw *Middleware) JWT(next http.Handler) http.Handler {
 			return
 		}
 
-		//roleId, ok := tokenMap["role_id"].(float64)
-		//
-		//if !ok {
-		//	resp = response.Unauthorized
-		//	resp.WriteJSON(w)
-		//	return
-		//}
-		//
-		//roleName, ok := tokenMap["role_name"].(string)
-		//
-		//if !ok {
-		//	resp = response.Unauthorized
-		//	resp.WriteJSON(w)
-		//	return
-		//}
+		roleID, ok := tokenMap["role_id"].(float64)
+
+		if !ok {
+			resp = response.Unauthorized
+			resp.WriteJSON(w)
+			return
+		}
+
+		// Проверка роли (в данном случае, что не является админом)
+		if strings.Contains(r.URL.String(), "/product/") && roleID != 1 {
+			resp = response.Forbidden
+			resp.WriteJSON(w)
+			return
+		}
+
+		if strings.Contains(r.URL.String(), "/project/") && roleID != 2 {
+			resp = response.Forbidden
+			resp.WriteJSON(w)
+			return
+		}
 
 		err = mw.service.CheckUserById(int(userID))
 
@@ -93,6 +99,9 @@ func (mw *Middleware) JWT(next http.Handler) http.Handler {
 			resp.WriteJSON(w)
 			return
 		}
+
+		context.Set(r, "role_id", int64(roleID))
+		context.Set(r, "user_id", int64(userID))
 
 		next.ServeHTTP(w, r)
 	})

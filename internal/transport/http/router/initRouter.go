@@ -19,16 +19,17 @@ func InitRouter(handlers *handlers.Handler, mw middleware.MiddlewareInterface) *
 
 	privateRouter.HandleFunc("/api/updateUser", handlers.UpdateUser).Methods("POST")
 
-	privateRouter.HandleFunc("/api/createProject", handlers.CreateProject).Methods("POST")
+	privateRouter.HandleFunc("/api/product/createProject", handlers.CreateProject).Methods("POST")
+	privateRouter.HandleFunc("/api/product/updateProject", handlers.UpdateProject).Methods("POST")
+
 	privateRouter.HandleFunc("/api/getProject", handlers.GetProject).Methods("GET")
-	privateRouter.HandleFunc("/api/updateProject", handlers.UpdateProject).Methods("POST")
 
-	privateRouter.HandleFunc("/api/createTask", handlers.CreateTask).Methods("POST")
+	privateRouter.HandleFunc("/api/project/createTask", handlers.CreateTask).Methods("POST")
+	privateRouter.HandleFunc("/api/project/updateTask", handlers.UpdateTask).Methods("POST")
 	privateRouter.HandleFunc("/api/getTask", handlers.GetTask).Methods("GET")
-	privateRouter.HandleFunc("/api/updateTask", handlers.UpdateTask).Methods("POST")
 
-	privateRouter.HandleFunc("/api/createProjectParticipant", handlers.CreateProjectParticipant).Methods("POST")
-	privateRouter.HandleFunc("/api/deleteProjectParticipant", handlers.DeleteProjectParticipant).Methods("DELETE")
+	privateRouter.HandleFunc("/api/product/createProjectParticipant", handlers.CreateProjectParticipant).Methods("POST")
+	privateRouter.HandleFunc("/api/product/deleteProjectParticipant", handlers.DeleteProjectParticipant).Methods("DELETE")
 
 	return router
 }

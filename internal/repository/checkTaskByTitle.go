@@ -8,10 +8,10 @@ import (
 )
 
 func (repo *Repository) CheckTaskByTitle(task models.Task) (err error) {
-	_, err = repo.Conn.Exec(context.Background(), `
-			select title from tasks 
+	row := repo.Conn.QueryRow(context.Background(), `
+			select id from tasks 
 			where title = $1`, task.Title)
-
+	err = row.Scan(&task.Id)
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			err = errors.ErrDataNotFound

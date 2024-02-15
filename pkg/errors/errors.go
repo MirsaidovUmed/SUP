@@ -9,4 +9,5 @@ var (
 	ErrProjectAlreadyExists = errors.New("такой проект уже существует")
 	ErrTaskAlreadyExists    = errors.New("такая задача уже существует")
 	ErrProjectNotFound      = errors.New("проект не существует")
+	ErrAccessDenied         = errors.New("нет доступа")
 )

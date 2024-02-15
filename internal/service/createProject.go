@@ -24,6 +24,8 @@ func (s *Service) CreateProject(project models.Project, status models.Status, ma
 	manager, err := s.Repo.GetUserIdByEmail(managerEmail)
 	if err != nil {
 		return
+	} else if manager.Id != 2 {
+		return errors.ErrAccessDenied
 	}
 	project.Manager.Id = manager.Id
 

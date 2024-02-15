@@ -2,13 +2,17 @@ package service
 
 import (
 	"SUP/internal/models"
+	"SUP/pkg/errors"
 )
 
 func (s *Service) CreateTask(task models.Task, status models.Status) (err error) {
 	err = s.Repo.CheckTaskByTitle(task)
 
-	if err != nil {
-		return err
+	if err != errors.ErrDataNotFound {
+		if err == nil {
+			return errors.ErrTaskAlreadyExists
+		}
+		return
 	}
 
 	statusFromDB, err := s.Repo.GetStatusByName(status)
@@ -21,7 +25,10 @@ func (s *Service) CreateTask(task models.Task, status models.Status) (err error)
 	controller, err := s.Repo.GetUserIdByEmail(task.Controller.Email)
 	if err != nil {
 		return err
+	} else if controller.Id != 2 {
+		return errors.ErrAccessDenied
 	}
+
 	task.Controller.Id = controller.Id
 
 	executor, err := s.Repo.GetUserIdByEmail(task.Executor.Email)

@@ -2,6 +2,7 @@ package service
 
 import (
 	"SUP/internal/models"
+	"SUP/pkg/errors"
 )
 
 func (s *Service) UpdateTask(task models.Task) (err error) {
@@ -29,6 +30,8 @@ func (s *Service) UpdateTask(task models.Task) (err error) {
 	controllerId, err := s.Repo.GetUserIdByEmail(task.Controller.Email)
 	if err != nil {
 		return err
+	} else if controllerId.Id != 2 {
+		return errors.ErrAccessDenied
 	}
 
 	existingTask.Controller.Id = controllerId.Id

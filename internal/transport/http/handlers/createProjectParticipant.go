@@ -5,6 +5,7 @@ import (
 	"SUP/pkg/errors"
 	"SUP/pkg/response"
 	"encoding/json"
+	"github.com/gorilla/context"
 	"net/http"
 )
 
@@ -19,6 +20,13 @@ func (h *Handler) CreateProjectParticipant(w http.ResponseWriter, r *http.Reques
 
 	if err != nil {
 		resp = response.BadRequest
+		return
+	}
+
+	_, ok := context.Get(r, "role_id").(int64)
+	if !ok {
+		resp.Code = 400
+		resp.Message = "Не удалось получить значение role_id из контекста"
 		return
 	}
 

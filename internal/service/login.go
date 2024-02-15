@@ -21,6 +21,6 @@ func (s *Service) Login(user models.User) (accessToken string, err error) {
 		return "", err
 	}
 
-	accessToken, err = utils.CreateToken(s.Config.JwtSecretKey, userFromDB.Id)
+	accessToken, err = utils.CreateToken(s.Config.JwtSecretKey, userFromDB.Id, userFromDB.Role.Id)
 	return accessToken, err
 }

@@ -5,6 +5,7 @@ import (
 	"SUP/pkg/errors"
 	"SUP/pkg/response"
 	"encoding/json"
+	"github.com/gorilla/context"
 	"net/http"
 )
 
@@ -18,6 +19,14 @@ func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&inputData)
 	if err != nil {
 		resp = response.BadRequest
+		return
+	}
+
+	_, ok := context.Get(r, "role_id").(int64)
+
+	if !ok {
+		resp.Code = 400
+		resp.Message = "Не удалось получить значение role_id из контекста"
 		return
 	}
 
@@ -40,6 +49,9 @@ func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 			resp.Code = http.StatusBadRequest
 			resp.Message = "Проект не найден"
 			return
+		} else if err == errors.ErrAccessDenied {
+			resp.Code = 401
+			resp.Message = "Недостаточно прав"
 		}
 		resp = response.InternalServer
 		return

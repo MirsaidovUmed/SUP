@@ -2,6 +2,7 @@ package service
 
 import (
 	"SUP/internal/models"
+	"SUP/pkg/errors"
 )
 
 func (s *Service) UpdateProject(project models.Project) (err error) {
@@ -28,7 +29,9 @@ func (s *Service) UpdateProject(project models.Project) (err error) {
 
 	managerId, err := s.Repo.GetUserIdByEmail(project.Manager.Email)
 	if err != nil {
-		return err
+		return
+	} else if managerId.Id != 2 {
+		return errors.ErrAccessDenied
 	}
 
 	existingProject.Manager.Id = managerId.Id

@@ -5,6 +5,7 @@ import (
 	"SUP/pkg/errors"
 	"SUP/pkg/response"
 	"encoding/json"
+	"github.com/gorilla/context"
 	"net/http"
 )
 
@@ -22,6 +23,14 @@ func (h *Handler) CreateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	_, ok := context.Get(r, "role_id").(int64)
+
+	if !ok {
+		resp.Code = 400
+		resp.Message = "Не удалось получить значение role_id из контекста"
+		return
+	}
+
 	err = h.svc.StatusExists(inputData.Status)
 	if err != nil {
 		if err == errors.ErrDataNotFound {
@@ -29,7 +38,6 @@ func (h *Handler) CreateTask(w http.ResponseWriter, r *http.Request) {
 			resp.Message = "Указанный статус не существует"
 			return
 		}
-
 		resp = response.InternalServer
 		return
 	}
@@ -41,8 +49,14 @@ func (h *Handler) CreateTask(w http.ResponseWriter, r *http.Request) {
 			resp.Code = 409
 			resp.Message = err.Error()
 			return
+		} else if err == errors.ErrTaskAlreadyExists {
+			resp.Code = 409
+			resp.Message = "Задача с таким именем существует"
+			return
+		} else if err == errors.ErrAccessDenied {
+			resp.Code = 401
+			resp.Message = "Недостаточно прав"
 		}
-
 		resp = response.InternalServer
 		return
 	}
