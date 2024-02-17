@@ -5,7 +5,6 @@ import (
 	"SUP/pkg/errors"
 	"context"
 	"github.com/jackc/pgx/v5"
-	"github.com/sirupsen/logrus"
 )
 
 func (repo *Repository) GetUserIdByEmail(userEmail string) (userFromDB models.User, err error) {
@@ -17,10 +16,6 @@ func (repo *Repository) GetUserIdByEmail(userEmail string) (userFromDB models.Us
 	err = row.Scan(&userFromDB.Id, &userFromDB.FirstName, &userFromDB.SecondName, &userFromDB.Email, &userFromDB.Password, &userFromDB.Role.Id)
 
 	if err != nil {
-		repo.Logger.WithFields(logrus.Fields{
-			"user": userFromDB,
-			"err":  err,
-		}).Error("error in repo, GetUserIdByEmail")
 		if err == pgx.ErrNoRows {
 			err = errors.ErrDataNotFound
 		}

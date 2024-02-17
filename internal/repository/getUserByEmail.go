@@ -18,8 +18,6 @@ func (repo *Repository) GetUserByEmail(user models.User) (userFromDB models.User
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			err = errors.ErrDataNotFound
-		} else {
-			err = errors.ErrAlreadyHasUser
 		}
 	}
 	return
