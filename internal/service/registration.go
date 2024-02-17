@@ -9,12 +9,8 @@ import (
 func (s *Service) Registration(user models.User, roleName string) (err error) {
 	_, err = s.Repo.GetUserByEmail(user)
 
-	if err != errors.ErrDataNotFound {
-		if err == nil {
-			return errors.ErrAlreadyHasUser
-		}
-
-		return
+	if err != nil {
+		return errors.ErrAlreadyHasUser
 	}
 
 	roleId, err := s.Repo.GetRoleByName(roleName)
