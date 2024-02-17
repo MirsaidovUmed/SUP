@@ -40,6 +40,9 @@ func (h *Handler) Registration(w http.ResponseWriter, r *http.Request) {
 			resp.Code = 400
 			resp.Message = "Пользователь с таким email уже существует"
 			return
+		} else if err == errors.ErrDataNotFound {
+			resp = response.BadRequest
+			return
 		}
 
 		resp = response.InternalServer
