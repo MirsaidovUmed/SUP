@@ -5,7 +5,6 @@ import (
 	"SUP/pkg/errors"
 	"SUP/pkg/response"
 	"encoding/json"
-	"log"
 	"net/http"
 )
 
@@ -22,7 +21,6 @@ func (h *Handler) GetTask(w http.ResponseWriter, r *http.Request) {
 
 	taskFromDB, err := h.svc.GetTask(inputData)
 	if err != nil {
-		log.Println("Error:", err) // Логгирование ошибки
 		if err == errors.ErrDataNotFound {
 			resp = response.Response{Code: 404, Message: "Задача не найдена"}
 		} else {

@@ -33,12 +33,22 @@ func (h *Handler) CreateProjectParticipant(w http.ResponseWriter, r *http.Reques
 	err = h.svc.CreateProjectParticipant(inputData)
 
 	if err != nil {
-		if err == errors.ErrAlreadyHasUser {
+		if err == errors.ErrDataNotFound {
+			resp = response.BadRequest
+			return
+		} else if err == errors.ErrUserNotFound {
+			resp.Code = 400
+			resp.Message = "Участник не найден"
+			return
+		} else if err == errors.ErrProjectNotFound {
+			resp.Code = http.StatusBadRequest
+			resp.Message = "Проект не найден"
+			return
+		} else if err == errors.ErrAlreadyHasUser {
 			resp.Code = 409
-			resp.Message = err.Error()
+			resp.Message = "Участник уже есть"
 			return
 		}
-
 		resp = response.InternalServer
 		return
 	}

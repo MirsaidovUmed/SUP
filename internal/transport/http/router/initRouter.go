@@ -28,8 +28,8 @@ func InitRouter(handlers *handlers.Handler, mw middleware.MiddlewareInterface) *
 	privateRouter.HandleFunc("/api/project/updateTask", handlers.UpdateTask).Methods("POST")
 	privateRouter.HandleFunc("/api/getTask", handlers.GetTask).Methods("GET")
 
-	privateRouter.HandleFunc("/api/product/createProjectParticipant", handlers.CreateProjectParticipant).Methods("POST")
-	privateRouter.HandleFunc("/api/product/deleteProjectParticipant", handlers.DeleteProjectParticipant).Methods("DELETE")
+	privateRouter.HandleFunc("/api/project/createProjectParticipant", handlers.CreateProjectParticipant).Methods("POST")
+	privateRouter.HandleFunc("/api/project/deleteProjectParticipant", handlers.DeleteProjectParticipant).Methods("DELETE")
 
 	return router
 }

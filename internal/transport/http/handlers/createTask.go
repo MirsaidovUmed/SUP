@@ -45,17 +45,16 @@ func (h *Handler) CreateTask(w http.ResponseWriter, r *http.Request) {
 	err = h.svc.CreateTask(inputData.Task, inputData.Status)
 
 	if err != nil {
-		if err == errors.ErrAlreadyHasUser {
-			resp.Code = 409
-			resp.Message = err.Error()
-			return
-		} else if err == errors.ErrTaskAlreadyExists {
+		if err == errors.ErrTaskAlreadyExists {
 			resp.Code = 409
 			resp.Message = "Задача с таким именем существует"
 			return
 		} else if err == errors.ErrAccessDenied {
-			resp.Code = 401
-			resp.Message = "Недостаточно прав"
+			resp = response.Forbidden
+			return
+		} else if err == errors.ErrDataNotFound {
+			resp = response.BadRequest
+			return
 		}
 		resp = response.InternalServer
 		return

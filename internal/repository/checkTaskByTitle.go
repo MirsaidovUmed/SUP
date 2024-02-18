@@ -7,11 +7,11 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func (repo *Repository) CheckTaskByTitle(task models.Task) (err error) {
+func (repo *Repository) CheckTaskByTitle(task models.Task) (taskFromDb models.Task, err error) {
 	row := repo.Conn.QueryRow(context.Background(), `
 			select id from tasks 
 			where title = $1`, task.Title)
-	err = row.Scan(&task.Id)
+	err = row.Scan(&taskFromDb.Id)
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			err = errors.ErrDataNotFound

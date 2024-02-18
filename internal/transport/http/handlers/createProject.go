@@ -43,17 +43,16 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 	err = h.svc.CreateProject(inputData.Project, inputData.Status, inputData.ManagerEmail.Email)
 
 	if err != nil {
-		if err == errors.ErrAlreadyHasUser {
-			resp.Code = 409
-			resp.Message = err.Error()
-			return
-		} else if err == errors.ErrProjectAlreadyExists {
+		if err == errors.ErrProjectAlreadyExists {
 			resp.Code = 409
 			resp.Message = "Проект с таким именем существует"
 			return
 		} else if err == errors.ErrAccessDenied {
-			resp.Code = 401
+			resp.Code = 409
 			resp.Message = "Доступ запрещен. Недостаточно прав для назначения в менеджеры."
+			return
+		} else if err == errors.ErrDataNotFound {
+			resp = response.BadRequest
 			return
 		}
 		resp = response.InternalServer

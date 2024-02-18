@@ -5,10 +5,13 @@ import (
 	"SUP/pkg/errors"
 )
 
-func (s *Service) GetProject(project models.Project) (projectFRomDB models.Project, err error) {
-	projectFRomDB, err = s.Repo.GetProject(project)
-	if err != errors.ErrDataNotFound {
-		return
+func (s *Service) GetProject(project models.Project) (models.Project, error) {
+	projectFromDB, err := s.Repo.GetProject(project)
+	if err == errors.ErrDataNotFound {
+		return models.Project{}, errors.ErrDataNotFound
+	} else if err != nil {
+		return models.Project{}, err
 	}
-	return projectFRomDB, nil
+
+	return projectFromDB, nil
 }

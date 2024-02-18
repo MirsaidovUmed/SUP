@@ -15,6 +15,10 @@ func (s *Service) CreateProject(project models.Project, status models.Status, ma
 		return
 	}
 
+	if project.Name == "" || project.Description == "" || status.Name == "" || managerEmail == "" {
+		return errors.ErrDataNotFound
+	}
+
 	statusFromDB, err := s.Repo.GetStatusByName(status)
 	if err != nil {
 		return
@@ -24,7 +28,7 @@ func (s *Service) CreateProject(project models.Project, status models.Status, ma
 	manager, err := s.Repo.GetUserIdByEmail(managerEmail)
 	if err != nil {
 		return
-	} else if manager.Id != 2 {
+	} else if manager.Role.Id != 2 {
 		return errors.ErrAccessDenied
 	}
 	project.Manager.Id = manager.Id

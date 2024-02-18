@@ -17,7 +17,7 @@ func (s *Service) Registration(user models.User, roleName string) (err error) {
 		return
 	}
 
-	if user.FirstName == "" || user.SecondName == "" || user.Email == "" || user.Role.Name == "" {
+	if user.FirstName == "" || user.SecondName == "" || user.Email == "" || roleName == "" || user.Password == "" {
 		return errors.ErrDataNotFound
 	}
 

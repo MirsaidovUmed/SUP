@@ -21,7 +21,7 @@ type RepositoryInterface interface {
 	CheckProjectByName(project models.Project) (projectFromDB models.Project, err error)
 	RoleExists(roleName string) (err error)
 	CreateTask(task models.Task) (err error)
-	CheckTaskByTitle(task models.Task) (err error)
+	CheckTaskByTitle(task models.Task) (taskFromDb models.Task, err error)
 	GetUserIdByEmail(userEmail string) (userFromDB models.User, err error)
 	GetProject(project models.Project) (projectFromDB models.Project, err error)
 	GetTask(task models.Task) (taskFromBD models.Task, err error)
@@ -30,6 +30,7 @@ type RepositoryInterface interface {
 	UpdateProject(project models.Project) (err error)
 	UpdateTask(task models.Task) (err error)
 	DeleteProjectParticipant(participant models.ProjectParticipant) (err error)
+	CheckProjectParticipant(projectParticipant models.ProjectParticipant) (err error)
 }
 
 func NewRepository(conn *pgx.Conn, logger *logrus.Logger) RepositoryInterface {
