@@ -29,7 +29,9 @@ func (s *Service) UpdateProject(project models.Project) (err error) {
 
 	managerId, err := s.Repo.GetUserIdByEmail(project.Manager.Email)
 	if err != nil {
-		return
+		if err == errors.ErrDataNotFound {
+			return errors.ErrUserNotFound
+		}
 	} else if managerId.Id != 2 {
 		return errors.ErrAccessDenied
 	}
@@ -38,5 +40,5 @@ func (s *Service) UpdateProject(project models.Project) (err error) {
 
 	err = s.Repo.UpdateProject(existingProject)
 
-	return err
+	return
 }

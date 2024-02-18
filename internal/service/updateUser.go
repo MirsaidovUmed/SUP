@@ -2,10 +2,14 @@ package service
 
 import (
 	"SUP/internal/models"
+	"SUP/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func (s *Service) UpdateUser(user models.User) (err error) {
+	if user.Role.Name != "" {
+		return errors.ErrChangeRole
+	}
 	existingUser, err := s.Repo.GetUserIdByEmail(user.Email)
 	if err != nil {
 		return err
@@ -19,17 +23,6 @@ func (s *Service) UpdateUser(user models.User) (err error) {
 	if user.SecondName != "" {
 		existingUser.SecondName = user.SecondName
 	}
-
-	if user.Email != "" {
-		existingUser.Email = user.Email
-	}
-
-	roleId, err := s.Repo.GetRoleByName(user.Role.Name)
-	if err != nil {
-		return err
-	}
-
-	existingUser.Role.Id = roleId.Id
 
 	if user.Password != "" {
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)

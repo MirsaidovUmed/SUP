@@ -50,8 +50,12 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 			resp.Message = "Проект не найден"
 			return
 		} else if err == errors.ErrAccessDenied {
-			resp.Code = 401
+			resp.Code = 403
 			resp.Message = "Доступ запрещен. Недостаточно прав для обновления проекта."
+			return
+		} else if err == errors.ErrUserNotFound {
+			resp.Code = 400
+			resp.Message = "Пользователь не найден"
 			return
 		}
 		resp = response.InternalServer

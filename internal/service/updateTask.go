@@ -29,28 +29,31 @@ func (s *Service) UpdateTask(task models.Task) (err error) {
 
 	controllerId, err := s.Repo.GetUserIdByEmail(task.Controller.Email)
 	if err != nil {
-		return err
-	} else if controllerId.Id != 2 {
-		return errors.ErrAccessDenied
+		if err == errors.ErrDataNotFound {
+			return errors.ErrUserNotFound
+		} else if controllerId.Id != 2 {
+			return errors.ErrAccessDenied
+		}
+		return
 	}
 
 	existingTask.Controller.Id = controllerId.Id
 
 	executorId, err := s.Repo.GetUserIdByEmail(task.Executor.Email)
-	if err != nil {
-		return err
+	if err == errors.ErrDataNotFound {
+		return errors.ErrUserNotFound
 	}
 
 	existingTask.Executor.Id = executorId.Id
 
 	projectId, err := s.Repo.CheckProjectByName(task.Project)
-	if err != nil {
-		return err
+	if err == errors.ErrDataNotFound {
+		return errors.ErrProjectNotFound
 	}
 
 	existingTask.Project.Id = projectId.Id
 
 	err = s.Repo.UpdateTask(existingTask)
 
-	return err
+	return
 }

@@ -20,18 +20,6 @@ func (h *Handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		resp = response.BadRequest
 		return
 	}
-
-	err = h.svc.RoleExists(inputData.RoleName)
-	if err != nil {
-		if err == errors.ErrDataNotFound {
-			resp.Code = http.StatusBadRequest
-			resp.Message = "Указанная роль не существует"
-			return
-		}
-		resp = response.InternalServer
-		return
-	}
-
 	inputData.User.Role.Name = inputData.RoleName
 	err = h.svc.UpdateUser(inputData.User)
 	if err != nil {
@@ -39,10 +27,13 @@ func (h *Handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 			resp.Code = http.StatusBadRequest
 			resp.Message = "Пользователь не найден"
 			return
+		} else if err == errors.ErrChangeRole {
+			resp.Code = http.StatusBadRequest
+			resp.Message = "Нельзя изменить роль"
+			return
 		}
 		resp = response.InternalServer
 		return
 	}
-
 	resp = response.Success
 }

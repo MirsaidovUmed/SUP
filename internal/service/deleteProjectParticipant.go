@@ -16,7 +16,10 @@ func (s *Service) DeleteProjectParticipant(projectParticipant models.ProjectPart
 
 	participant, err := s.Repo.GetUserIdByEmail(projectParticipant.Participant.Email)
 	if err != nil {
-		return
+		if err == errors.ErrDataNotFound {
+			return errors.ErrUserNotFound
+		}
+		return err
 	}
 	projectParticipant.Participant.Id = participant.Id
 

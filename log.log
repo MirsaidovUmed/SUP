@@ -1,0 +1,2 @@
+time="2024-02-19T00:44:53+05:00" level=error msg="error in repo, GetStatusByName" func="SUP/internal/repository.(*Repository).GetStatusByName" file="D:/go/sup_copy/internal/repository/getStatusByName.go:21" err="no rows in result set" status_name="{0 }"
+time="2024-02-19T02:16:14+05:00" level=error msg="error in repo, GetStatusByName" func="SUP/internal/repository.(*Repository).GetStatusByName" file="D:/go/sup_copy/internal/repository/getStatusByName.go:21" err="no rows in result set" status_name="{0 }"

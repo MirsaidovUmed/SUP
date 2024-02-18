@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"SUP/internal/models"
+	"SUP/pkg/errors"
 	"SUP/pkg/response"
 	"encoding/json"
 	"github.com/gorilla/context"
@@ -30,6 +31,15 @@ func (h *Handler) DeleteProjectParticipant(w http.ResponseWriter, r *http.Reques
 
 	err = h.svc.DeleteProjectParticipant(inputData)
 	if err != nil {
+		if err == errors.ErrUserNotFound {
+			resp.Code = 400
+			resp.Message = "Участник не найден"
+			return
+		} else if err == errors.ErrProjectNotFound {
+			resp.Code = http.StatusBadRequest
+			resp.Message = "Проект не найден"
+			return
+		}
 		resp = response.InternalServer
 		return
 	}
