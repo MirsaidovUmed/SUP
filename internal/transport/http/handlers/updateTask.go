@@ -5,6 +5,7 @@ import (
 	"SUP/pkg/errors"
 	"SUP/pkg/response"
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/context"
 	"net/http"
 )
@@ -45,6 +46,7 @@ func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 
 	err = h.svc.UpdateTask(inputData.Task)
 	if err != nil {
+		fmt.Println(err)
 		if err == errors.ErrDataNotFound {
 			resp.Code = 400
 			resp.Message = "Задача не найдена"
@@ -52,6 +54,7 @@ func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 		} else if err == errors.ErrAccessDenied {
 			resp.Code = 403
 			resp.Message = "Недостаточно прав"
+			return
 		} else if err == errors.ErrUserNotFound {
 			resp.Code = 400
 			resp.Message = "Пользователь не найден"

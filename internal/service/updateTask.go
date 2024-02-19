@@ -31,10 +31,10 @@ func (s *Service) UpdateTask(task models.Task) (err error) {
 	if err != nil {
 		if err == errors.ErrDataNotFound {
 			return errors.ErrUserNotFound
-		} else if controllerId.Id != 2 {
-			return errors.ErrAccessDenied
 		}
 		return
+	} else if controllerId.Id != 2 {
+		return errors.ErrAccessDenied
 	}
 
 	existingTask.Controller.Id = controllerId.Id
