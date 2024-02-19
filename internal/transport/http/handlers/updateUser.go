@@ -24,11 +24,11 @@ func (h *Handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	err = h.svc.UpdateUser(inputData.User)
 	if err != nil {
 		if err == errors.ErrDataNotFound {
-			resp.Code = http.StatusBadRequest
+			resp.Code = 400
 			resp.Message = "Пользователь не найден"
 			return
 		} else if err == errors.ErrChangeRole {
-			resp.Code = http.StatusBadRequest
+			resp.Code = 422
 			resp.Message = "Нельзя изменить роль"
 			return
 		}

@@ -37,7 +37,7 @@ func (h *Handler) Registration(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		if err == errors.ErrAlreadyHasUser {
-			resp.Code = 400
+			resp.Code = 409
 			resp.Message = "Пользователь с таким email уже существует"
 			return
 		} else if err == errors.ErrDataNotFound {

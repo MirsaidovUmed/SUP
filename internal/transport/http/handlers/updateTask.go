@@ -33,7 +33,7 @@ func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 	err = h.svc.StatusExists(inputData.Status)
 	if err != nil {
 		if err == errors.ErrDataNotFound {
-			resp.Code = http.StatusBadRequest
+			resp.Code = 400
 			resp.Message = "Указанный статус не существует"
 			return
 		}
@@ -46,18 +46,18 @@ func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 	err = h.svc.UpdateTask(inputData.Task)
 	if err != nil {
 		if err == errors.ErrDataNotFound {
-			resp.Code = http.StatusBadRequest
+			resp.Code = 400
 			resp.Message = "Задача не найдена"
 			return
 		} else if err == errors.ErrAccessDenied {
-			resp.Code = 401
+			resp.Code = 403
 			resp.Message = "Недостаточно прав"
 		} else if err == errors.ErrUserNotFound {
 			resp.Code = 400
 			resp.Message = "Пользователь не найден"
 			return
 		} else if err == errors.ErrProjectNotFound {
-			resp.Code = http.StatusBadRequest
+			resp.Code = 400
 			resp.Message = "Проект не найден"
 			return
 		}

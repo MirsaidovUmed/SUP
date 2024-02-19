@@ -32,7 +32,7 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	err = h.svc.StatusExists(inputData.Status)
 	if err != nil {
 		if err == errors.ErrDataNotFound {
-			resp.Code = http.StatusBadRequest
+			resp.Code = 400
 			resp.Message = "Указанный статус не существует"
 			return
 		}
@@ -46,7 +46,7 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	err = h.svc.UpdateProject(inputData.Project)
 	if err != nil {
 		if err == errors.ErrDataNotFound {
-			resp.Code = http.StatusBadRequest
+			resp.Code = 400
 			resp.Message = "Проект не найден"
 			return
 		} else if err == errors.ErrAccessDenied {

@@ -28,7 +28,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 			resp = response.NotFound
 			return
 		} else if err == errors.ErrWrongPassword {
-			resp.Code = http.StatusForbidden
+			resp.Code = 401
 			resp.Message = "Wrong Password"
 			return
 		} else {

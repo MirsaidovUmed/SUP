@@ -41,7 +41,7 @@ func (h *Handler) CreateProjectParticipant(w http.ResponseWriter, r *http.Reques
 			resp.Message = "Участник не найден"
 			return
 		} else if err == errors.ErrProjectNotFound {
-			resp.Code = http.StatusBadRequest
+			resp.Code = 400
 			resp.Message = "Проект не найден"
 			return
 		} else if err == errors.ErrAlreadyHasUser {

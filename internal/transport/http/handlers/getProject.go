@@ -5,7 +5,6 @@ import (
 	"SUP/pkg/errors"
 	"SUP/pkg/response"
 	"encoding/json"
-	"log"
 	"net/http"
 )
 
@@ -22,7 +21,6 @@ func (h *Handler) GetProject(w http.ResponseWriter, r *http.Request) {
 
 	projectFromDB, err := h.svc.GetProject(inputData)
 	if err != nil {
-		log.Println("Error:", err) // Логгирование ошибки
 		if err == errors.ErrDataNotFound {
 			resp = response.Response{Code: 404, Message: "Проект не найден"}
 		} else {
